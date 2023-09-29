@@ -20,8 +20,6 @@ app.use((req, res, next) => {
     next(new ErrorHandler('Route not found', 404));
 });
 
-// error middleware
-
 sequelize
     .authenticate()
     .then(() => {
@@ -30,6 +28,7 @@ sequelize
     })
     .catch((err) => console.log('Error in db connection |', err.message));
 
+// error middleware
 app.use((err, req, res, next) => {
     err.message = err.message || 'Internal Server Error';
     err.statusCode = err.statusCode || 500;
