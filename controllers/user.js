@@ -9,6 +9,12 @@ exports.insert = catchAsyncError(async (req, res, next) => {
         const hashedPass = await bcrypt.hash(req.body.user_password, 12);
         req.body.user_password = hashedPass;
     }
+    const existUser = await User.findOne({
+        where: { user_email: req.body.user_email },
+    });
+    if (existUser) {
+        return next(new ErrorHandler('email already exist', 400));
+    }
     const user = await User.create(req.body);
     res.status(201).json({
         success: true,
