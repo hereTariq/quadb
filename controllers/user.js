@@ -9,12 +9,11 @@ exports.insert = catchAsyncError(async (req, res, next) => {
         const hashedPass = await bcrypt.hash(req.body.user_password, 12);
         req.body.user_password = hashedPass;
     }
-    const newUser = await User.create(req.body);
-    let { user_password, ...rest } = newUser.dataValues;
+    const user = await User.create(req.body);
     res.status(201).json({
         success: true,
         message: 'user created successfully',
-        user: rest,
+        user,
     });
 });
 
