@@ -5,8 +5,10 @@ const ErrorHandler = require('../middlewares/errorHandler');
 const User = require('../models/user');
 
 exports.insert = catchAsyncError(async (req, res, next) => {
-    const hashedPass = await bcrypt.hash(req.body.user_password, 12);
-    req.body.user_password = hashedPass;
+    if (req.body.user_password) {
+        const hashedPass = await bcrypt.hash(req.body.user_password, 12);
+        req.body.user_password = hashedPass;
+    }
     const newUser = await User.create(req.body);
     let { user_password, ...rest } = newUser.dataValues;
     res.status(201).json({
