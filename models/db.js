@@ -9,5 +9,9 @@ const { Sequelize } = require('sequelize');
 //     port: process.env.MYSQL_PORT,
 //     logging: false,
 // });
-const sequelize = new Sequelize(process.env.MYSQL_URI, { logging: false });
+const sequelize = new Sequelize(process.env.MYSQL_URI, {
+    dialectModule: require('mysql2'),
+    dialect: 'mysql',
+    logging: false,
+});
 module.exports = sequelize;
